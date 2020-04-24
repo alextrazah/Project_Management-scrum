@@ -1,0 +1,53 @@
+rh_homepage:
+    path:     /
+    defaults: { _controller: RhBundle:Default:index }
+Afficher:
+    path:     /Afficher
+    defaults: { _controller: RhBundle:Absence:Afficher }
+ajout:
+    path:     /ajout
+    defaults: { _controller: RhBundle:Absence:create }
+
+trouverDomaine:
+    path:     /trouver
+    defaults: { _controller: RhBundle:Absence:trouverDomaine }
+Afficherab:
+    path:     /Afficherab
+    defaults: { _controller: RhBundle:Absence:Afficherab }
+update1:
+    path:     /update1/{id}
+    defaults: { _controller: RhBundle:Absence:update1 }
+test:
+    path:     /test
+    defaults: { _controller: RhBundle:Absence:test }
+delete1:
+    path:     /delete1/{id}
+    defaults: { _controller: RhBundle:Absence:delete1 }
+
+ajoutdemande:
+    path:     /ajoutdemande
+    defaults: { _controller: RhBundle:DemandeConge:createdemande }
+affdemande:
+    path:     /affdemande
+    defaults: { _controller: RhBundle:DemandeConge:AfficherDemande}
+ajouterab:
+    path:     /ajab/{id}
+    defaults: { _controller: RhBundle:Absence:ajouter_absence }
+ajoutersp:
+    path:     /ajoutsp
+    defaults: { _controller: RhBundle:Sp:create }
+affecter:
+    path:     /affecter/{id}
+    defaults: { _controller: RhBundle:DemandeConge:ajouter_conger}
+afficherc:
+    path:     /afficherc
+    defaults: { _controller: RhBundle:DemandeConge:Afficherconge }
+deletec:
+    path:     /deletec/{id}
+    defaults: { _controller: RhBundle:DemandeConge:deletec }
+test1:
+    path:     /test1
+    defaults: { _controller: RhBundle:Absence:test1 }
+burn:
+    path:     /burn
+    defaults: { _controller: RhBundle:Test:Burn }
