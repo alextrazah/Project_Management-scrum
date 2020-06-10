@@ -51,3 +51,27 @@ test1:
 burn:
     path:     /burn
     defaults: { _controller: RhBundle:Test:Burn }
+find_Absence:
+    path:     /absence/{username}
+    defaults: { _controller: RhBundle:Absence:find_Absence }
+newab:
+    path:     /task/new/{idc}/{heure}/{nbre}/{date}
+    defaults: { _controller: RhBundle:Absence:newab }
+deletemobab:
+    path:     /del/{id}
+    defaults: { _controller: RhBundle:Absence:deletemobab }
+
+update_mob:
+    path:     /mod/{date}/{nbre}/{heure}/{id}
+    defaults: { _controller: RhBundle:Absence:update_mob }
+
+findBYdate:
+    path:     /calendriermobile/{date}
+    defaults: { _controller: RhBundle:Absence:findBYdate }
+
+newdemande:
+    path:     /dm/new/{iddem}/{dd}/{df}/{raison}
+    defaults: { _controller: RhBundle:DemandeConge:newdemande }
+find_conge:
+    path:     /affdm/{username}
+    defaults: { _controller: RhBundle:DemandeConge:find_conge }

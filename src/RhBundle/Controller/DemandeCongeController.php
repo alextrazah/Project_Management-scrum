@@ -12,8 +12,14 @@ use EntitiesBundle\Entity\Conge;
 use EntitiesBundle\Form\DemandeCongeType;
 use EntitiesBundle\Form\CongeType;
 use EntitiesBundle\Entity\User;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use EntitiesBundle\Repository\DemandeRepository;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class DemandeCongeController  extends Controller
 {
@@ -119,6 +125,49 @@ class DemandeCongeController  extends Controller
 
     }
 
+    public function newdemandeAction($iddem,$dd,$df,$raison)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $task = new DemandeConge();
+        $dd=new \DateTime($dd);
+        $df=new \DateTime($df);
+        $club=$em->getRepository('EntitiesBundle:User')->findOneBy(array('Nom'=>$iddem));
+        $task->setDateDebut($dd);
+        $task->setDateFin($df);
+        $task->setRaison($raison);
 
+        $task->setIdeUser($club);
 
+        $em->persist($task);
+        $em->flush();
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($task);
+        return new JsonResponse($formatted);
+    }
+
+    public function find_congeAction($username)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sql = "SELECT id_dconge,ide_user,date_debut,date_fin,raison , fos_user.username from demande_conge INNER JOIN fos_user on fos_user.id=demande_conge.ide_user ";
+        $params[':dom'] = $username;
+        $em = $this->getDoctrine()->getManager();
+
+        $statement = $em->getConnection()->prepare($sql);
+        $statement->execute($params);
+        $a = $statement->fetchAll();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($a);
+        return new JsonResponse($formatted);
+    }
+    public function findBYdateAction($date)
+    {
+        $event = $this->getDoctrine()->getManager()->getRepository('EntitiesBundle:DemandeConge')->findDateDQL($date);
+        $normalizer = new ObjectNormalizer(null, null, null, new ReflectionExtractor());
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizer]);
+        $formatted = $serializer->normalize($event,'json', [AbstractNormalizer::ATTRIBUTES => ['idDconge','dateDebut'=>['dateDebut'],'dateFin'=>['dateFin'],'raison','ideUser']]);
+
+        return new JsonResponse($formatted);
+
+    }
 }
